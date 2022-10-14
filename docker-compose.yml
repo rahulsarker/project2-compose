@@ -11,17 +11,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       replicas: 1
-      
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins-server
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    networks:
-      -net
-    volumes:
-      -"${PWD}/jenkins-home:/var/jenkins_home"
-  
-networks:
-  net:
+
