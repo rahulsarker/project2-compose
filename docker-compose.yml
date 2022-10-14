@@ -15,19 +15,13 @@ services:
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins-server
-    privileged: true
-    hostname: jenkinsserver
     ports:
       - "8080:8080"
       - "50000:50000"
     networks:
-      jenkins-net:
-        aliases:
-          -jenkins-net
+      -net
     volumes:
-      -jenkins-home:/var/jenkins_home
-volumes:
-  jenkins-data:
+      -"${PWD}/jenkins-home:/var/jenkins_home"
   
 networks:
-  jenkins-net:
+  net:
