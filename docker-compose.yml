@@ -18,15 +18,14 @@ services:
     privileged: true
     hostname: jenkinsserver
     ports:
-      - "8000:8000"
+      - "8080:8080"
       - "50000:50000"
     networks:
       jenkins-net:
         aliases:
           -jenkins-net
     volumes:
-      -jenkins-data:/var/jenkins_home
-      -/var/run/docker.sock:/var/run/docker.sock
+      -jenkins-home:/var/jenkins_home
 volumes:
   jenkins-data:
   
