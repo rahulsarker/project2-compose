@@ -1,19 +1,25 @@
-version: '3.8'
+version: "3.7"
 
-
+networks:
+  jenkins:
+    driver: bridge
+volumes:
+  jenkins-data:
+  docker-certs-ca:
+  docker-certs-client:
 services:
   dind:
     image: docker:dind
     privileged: true
     user: root
     container_name: dind
-    restart: unless-stopped
     networks:
       jenkins:
         aliases:
           - docker
     expose:
       - "2376"
+    restart: unless-stopped
     volumes:
       - docker-certs-ca:/certs/ca
       - docker-certs-client:/certs/client
@@ -25,7 +31,6 @@ services:
     image: jenkins/jenkins:lts-jdk11
     privileged: true
     user: root
-    restart: unless-stopped
     ports:      
       - 8080:8080
       - 50000:50000
@@ -34,6 +39,7 @@ services:
       - jenkins
     depends_on:
       - dind
+    restart: unless-stopped
     volumes:
       - docker-certs-client:/certs/client:ro
       - jenkins-data:/var/jenkins_home
@@ -42,13 +48,3 @@ services:
       - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
-      
-volumes:
-  jenkins-data:
-  docker-certs-ca:
-  docker-certs-client:
-
-
-networks:
-  jenkins:
-    driver: bridge
